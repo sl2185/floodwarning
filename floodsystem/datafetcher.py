@@ -46,6 +46,12 @@ def fetch_station_data(use_cache=True):
     retrieval over the Internet and avoids excessive calls to the
     Environment Agency service.
 
+    Args:
+        use_cache: If ``True``, use file cache. Otherwise fetch data
+            over the Internet.
+
+    Returns:
+        River level data.
     """
 
     # URL for retrieving data for active stations with river level
