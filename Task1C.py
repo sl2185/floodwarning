@@ -7,9 +7,11 @@ def run():
     # Build list of stations
     stations = build_station_list()
 
-    stations_wihtin_radius_usnorted = stations_within_radius(stations, (52.2053, 0.1218), 10)
+    stations_wihtin_radius_list = stations_within_radius(stations, (52.2053, 0.1218), 10)
 
-    for station in stations_withint_radius_usnorted:
+    output = []
+
+    for station in stations_wihtin_radius_list:
         output.append(station.name)
     print(sorted(output))
 

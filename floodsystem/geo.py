@@ -2,13 +2,9 @@
 #
 # SPDX-License-Identifier: MIT
 """This module contains a collection of functions related to
-geographical data.
+geographical data."""
 
-"""
-import utils
-from utils import sorted_by_key
-
-#from utils import sorted_by_key  # noqa
+from .utils import sorted_by_key  # noqa
 import haversine #calculating distance from two points
 
 def stations_by_distance(stations, p):
@@ -19,18 +15,18 @@ def stations_by_distance(stations, p):
     for station in stations:
 
         #uses haversine fuction from python
-        distancep = haversine.haversine(station.coord, p)
+        distance_p = haversine.haversine(station.coord, p)
 
         #tuple with station and its distance from p
-        statDisTup = (station, distancep)
+        statDisTup = (station, distance_p)
 
         #adds this station onto the preexisting tuple
         stations_distance_p.append(statDisTup)
 
-        #sorting the stations
-        sorted_stations_distance_p = sorted_by_key(stations_distance_p, 1)
+    #sorting the stations
+    sorted_stations_distance_p = sorted_by_key(stations_distance_p, 1)
 
-        return sorted_stations_distance_p
+    return (sorted_stations_distance_p)
 
 def stations_within_radius(stations, centre, r):
     '''returns a list of all stations within radius r of a geographic coordinate x'''
