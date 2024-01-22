@@ -45,3 +45,41 @@ def stations_within_radius(stations, centre, r):
     return stations_in_radius
 
     
+def rivers_with_station(stations):
+    '''
+    Returns a list of rivers with a monitoring stations
+
+    Args:
+        stations(list): A list of MonitoringStations objects
+
+    Returns:
+        unique_rivers: a list of rivers with no duplicates
+    '''
+
+    unique_rivers = [] #creates a blank list to store river values
+
+    for station in stations:
+         if station.river not in unique_rivers:
+            unique_rivers.append(station.river)
+    
+    return unique_rivers
+
+def stations_by_river(stations):
+    '''Maps river names to a list of stations on that river
+    
+    Args:
+        stations(list): A list of MonitoringStations objects
+    
+     Returns:
+        station_river_dict(dict): A dictionary that maps river names (key) to a list of station objects '''
+    
+    station_river_dict = {} #create an empty dictionary
+
+    
+    for station in stations.sort():
+        if station.river not in station_river_dict: 
+            station_river_dict[station.river] = [] #create an empty list if the river is not already inside the dictionary keys
+        station_river_dict[station.river].append(station) #adds the station to the river's list of stations
+    
+    return station_river_dict[station.river] 
+    
