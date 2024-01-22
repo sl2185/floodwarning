@@ -60,7 +60,7 @@ def rivers_with_station(stations):
 
     for station in stations:
          if station.river not in unique_rivers:
-            unique_rivers.append(station.river)
+            unique_rivers.append(str(station.river))
     
     return unique_rivers
 
@@ -76,10 +76,10 @@ def stations_by_river(stations):
     station_river_dict = {} #create an empty dictionary
 
     
-    for station in stations.sort():
+    for station in stations:
         if station.river not in station_river_dict: 
             station_river_dict[station.river] = [] #create an empty list if the river is not already inside the dictionary keys
         station_river_dict[station.river].append(station) #adds the station to the river's list of stations
     
-    return station_river_dict[station.river] 
+    return station_river_dict
     
