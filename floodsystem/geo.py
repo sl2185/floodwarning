@@ -82,4 +82,42 @@ def stations_by_river(stations):
         station_river_dict[station.river].append(station) #adds the station to the river's list of stations
     
     return station_river_dict
+
+def rivers_by_station_number(stations, N):
+    '''Returns the top N rivers with the greatest number of monitoring stations. If there are more 
+     rivers with the same number of stations as the N th entry, these rivers are included.
     
+    Args:
+        stations(list): A list of MonitoringStations objects
+        N (int): Number of rivers we want to include in the list
+    Returns:
+        top_station_rivers(list) A list of N tuples, of which in the form (river, number of stations) 
+     '''
+    
+    station_river_dict_num = {} #create an empty dictionary 
+
+    for station in stations:
+        if station.river not in station_river_dict_num: 
+            station_river_dict_num[station.river] = 1 #initialise the number of stations on the river as 1 if its not in the dictionary
+        else:
+            station_river_dict_num[station.river] +=1 #add 1 to the count of stations
+
+    sorted_rivers_by_station = sorted(station_river_dict_num.items(), key=lambda x: x[1], reverse=True)
+    # creates a list of tuples sorted by values in descending order (highest number of stations first)
+
+    # Find the count of stations for the Nth river
+    count_of_Nth_river = sorted_rivers_by_station[N-1][1]
+
+    # Iterate to find the position where counts change
+    index_of_Nth_river = N
+    while index_of_Nth_river < len(sorted_rivers_by_station) and sorted_rivers_by_station[index_of_Nth_river][1] == count_of_Nth_river:
+        index_of_Nth_river += 1
+        
+    # Select the top N rivers and any additional rivers with the same number of stations as the Nth river
+    top_station_rivers = sorted_rivers_by_station[:index_of_Nth_river]
+    return top_station_rivers
+    
+
+            
+
+
