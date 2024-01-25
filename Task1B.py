@@ -11,9 +11,8 @@ def run():
     ten_furthest = stations_by_distance(stations,(52.2053, 0.1218))[-10:]
     
     # Check for  number of stations in list
-    print("Number of stations: {}".format(len(ten_closest)))
-    print("Number of stations: {}".format(len(ten_furthest)))
-
+    #print("Number of stations: {}".format(len(ten_closest)))
+    #print("Number of stations: {}".format(len(ten_furthest))
 
     # Print 10 closest and furthest stations
     print('ten closest stations from cambridge city centre:', ten_closest)
