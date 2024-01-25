@@ -14,7 +14,7 @@ def run():
     #print("Number of stations: {}".format(len(ten_closest)))
     #print("Number of stations: {}".format(len(ten_furthest))
 
-    # Print 10 closest and furthest stations
+    #Print 10 closest and furthest stations
     print('ten closest stations from cambridge city centre:', ten_closest)
     print('ten furthest stations from cambridge city centre:', ten_furthest)
     
