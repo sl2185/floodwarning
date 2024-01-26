@@ -35,22 +35,21 @@ class StationsByRiverTestError(Exception):
 def test_stations_by_river():
 # Build list of monitoringstation objects that have a specified river attribute
         
-    test_station1 = floodsystem.station.MonitoringStation(label = 'Station1', river = 'River1')
-    test_station2 = floodsystem.station.MonitoringStation(label = 'Station2', river = 'River1')
-    test_station3 = floodsystem.station.MonitoringStation(label = 'Station3', river = 'River1')
-    test_station4 = floodsystem.station.MonitoringStation(label = 'Station4', river = 'River2')
-    test_station5 = floodsystem.station.MonitoringStation(label = 'Station5', river = 'River2')
-    test_station6 = floodsystem.station.MonitoringStation(label = 'Station6', river = 'River3')
+    test_station1 = floodsystem.station.MonitoringStation(label = 'Station1', river = 'River1',station_id="test",measure_id="test",coord= (0,0),typical_range=(0,0),town = "test")
+    test_station2 = floodsystem.station.MonitoringStation(label = 'Station2', river = 'River1',station_id="test",measure_id="test",coord= (0,0),typical_range=(0,0),town = "test")
+    test_station3 = floodsystem.station.MonitoringStation(label = 'Station3', river = 'River1',station_id="test",measure_id="test",coord= (0,0),typical_range=(0,0),town = "test")
+    test_station4 = floodsystem.station.MonitoringStation(label = 'Station4', river = 'River2',station_id="test",measure_id="test",coord= (0,0),typical_range=(0,0),town = "test")
+    test_station5 = floodsystem.station.MonitoringStation(label = 'Station5', river = 'River2',station_id="test",measure_id="test",coord= (0,0),typical_range=(0,0),town = "test")
+    test_station6 = floodsystem.station.MonitoringStation(label = 'Station6', river = 'River3',station_id="test",measure_id="test",coord= (0,0),typical_range=(0,0),town = "test")
 
     test_station_list = [ test_station1, test_station2, test_station3, test_station4, test_station5, test_station6]
 
     result = stations_by_river(test_station_list)
 
-    assert "Station1" and "Station2" and "Station3 " in result['River1']
-
-    assert "Station4" and "Station5" in result['River2']
-        
-    assert "Station6" in result['River3']
-
-
-
+    for station in result['River1']:
+        assert station.name in ['Station1', 'Station2', 'Station3']
+    for station in result['River2']:
+        assert station.name in ['Station4', 'Station5']
+    for station in result['River3']:
+        assert station.name in ['Station6']
+ 
