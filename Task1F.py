@@ -8,8 +8,6 @@ def run():
     # Build list of stations
     stations = build_station_list()
 
-    inconsistent_stations = inconsistent_typical_range_stations(stations)
-
     for station in inconsistent_typical_range_stations(stations):
         output.append(station.name)
     
