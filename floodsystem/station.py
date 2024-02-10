@@ -59,18 +59,19 @@ class MonitoringStation:
 
     def relative_water_level(self):
         """Returns the latest water level as a fraction of the typical range."""
-        
-        #check data is consisten
-        if self.latest_level is None or not self.typical_range_consistent():
+       
+        if self.typical_range is None:
+            #no data in typical range
             return None
+
+        low,high = self.typical_range
         
-        #check there is a range of data
-        low, high = self.typical_range
-        if high - low == 0:
+        if low is None or high is None or high < low:
+            #data is inconsistent
             return None
-        
+
         #returns the ration
-        return (self.latest_level - low) / (high - low)
+        return (self.latest_level) / typical_range
 
 def inconsistent_typical_range_stations(stations):
     """Returns a list of stations that have inconsistent data"""
@@ -82,3 +83,28 @@ def inconsistent_typical_range_stations(stations):
             inconsistent_range_stations.append(station)
 
     return inconsistent_range_stations
+
+def stations_level_over_threshold(stations, tol):
+    """
+    Returns a list of tuples containing stations and their relative water levels 
+    that are above a specified tolerance level.
+    """
+    valid_stations = []
+
+    for station in stations:
+
+        # Check if the typical range of the station is consistent
+        if station.typical_range_consistent():
+            # Calculate the relative water level for the current station
+            relative_level = station.relative_water_level()
+            
+            # Check if the relative water level is not None and above the specified tolerance
+            if relative_level is not None and relative_level > tol:
+                # If both conditions are met, add the station and its relative level to the valid_stations list
+                valid_stations.append((station, relative_level))
+                
+    # Sort the valid stations based on their relative water levels in descending order
+    valid_stations_sorted = sorted(valid_stations, key=lambda x: x[1], reverse=True)
+
+    # Return the sorted list of valid stations
+    return valid_stations_sorted
