@@ -96,11 +96,12 @@ def test_stations_highest_rel_level():
     stations = build_station_list()
 
     update_water_levels(stations)
+
     N = 10
 
-    result = stations_highest_rel_level(stations,N)
+    result = stations_highest_rel_level(stations, N)
 
     assert isinstance(result,list)
-    assert len(result) == 10
+    assert len(result) == N
     assert all(result[i].relative_water_level() >= result[i+1].relative_water_level() for i in range(len(result)-1))
-    assert all(isinstance(results[i], MonitoringStation) for i in range(len(result)))
+    assert all(isinstance(result[i], MonitoringStation) for i in range(len(result)))
