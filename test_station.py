@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 """Unit test for the station module"""
 
-from floodsystem.station import MonitoringStation, stations_level_over_threshold
+from floodsystem.station import MonitoringStation, stations_level_over_threshold, stations_highest_rel_level
 from floodsystem.stationdata import build_station_list, update_water_levels
 from floodsystem.utils import sorted_by_key
 
@@ -90,3 +90,17 @@ def test_stations_level_over_threshold():
         assert station[1] > tol
 
     assert all(result[i][1] >= result[i+1][1] for i in range(len(result)-1))
+
+
+def test_stations_highest_rel_level():
+    stations = build_station_list()
+
+    update_water_levels(stations)
+    N = 10
+
+    result = stations_highest_rel_level(stations,N)
+
+    assert isinstance(result,list)
+    assert len(result) == 10
+    assert all(result[i].relative_water_level() >= result[i+1].relative_water_level() for i in range(len(result)-1))
+    assert all(isinstance(results[i], MonitoringStation) for i in range(len(result)))

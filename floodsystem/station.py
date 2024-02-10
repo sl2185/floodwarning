@@ -121,14 +121,15 @@ def stations_highest_rel_level(stations, N):
     relative to the typical range, is highest. The list is sorted in 
     descending order by relative level.
     """
-    # Filter out stations with inconsistent typical range data or missing latest level
-    valid_stations = [station for station in stations if station.typical_range_consistent() and station.latest_level is not None]
 
-    # Calculate relative water levels for all valid stations
-    relative_levels = [(station, station.relative_water_level()) for station in valid_stations]
+    overthreshold = stations_level_over_threshold(stations,1)
 
-    # Sort stations by relative level in descending order
-    sorted_stations = sorted(relative_levels, key=lambda x: x[1], reverse=True)
+    sorted_stations = sorted_by_key(overthreshold, 1, reverse=True)
+
+    output=[]
+
+    for station in sorted_stations:
+        output.append(station[0])
 
     # Return the top N stations
-    return sorted_stations[:N]
+    return output[:int(N)]
