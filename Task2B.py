@@ -1,4 +1,4 @@
-from floodsystem.station import MonitoringStation, inconsistent_typical_range_stations, stations_level_over_threshold
+from floodsystem.station import MonitoringStation, inconsistent_typical_range_stations, stations_level_over_threshold, relative_water_level
 from floodsystem.stationdata import build_station_list
 
 def run():

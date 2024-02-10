@@ -6,6 +6,7 @@ for manipulating/modifying station data
 
 """
 
+from floodsystem.utils import sorted_by_key
 
 class MonitoringStation:
     """This class represents a river level monitoring station"""
@@ -59,19 +60,20 @@ class MonitoringStation:
 
     def relative_water_level(self):
         """Returns the latest water level as a fraction of the typical range."""
-       
-        if self.typical_range is None:
-            #no data in typical range
-            return None
 
-        low,high = self.typical_range
-        
+        # Check if typical range consistency or latest level existence is violated
+        if not self.typical_range_consistent() or self.latest_level is None:
+            return None  # Return None if there's no data in the typical range or latest level is missing
+
+        # Unpack the typical range into low and high values
+        low, high = self.typical_range
+    
+        # Check if any of the values in the typical range are None or if the high value is less than the low value
         if low is None or high is None or high < low:
-            #data is inconsistent
-            return None
+            return None  # Return None if data is inconsistent
 
-        #returns the ration
-        return (self.latest_level) / typical_range
+        # Calculate the relative water level as the ratio of the latest level to the typical range
+        return (self.latest_level - low) / (high - low)
 
 def inconsistent_typical_range_stations(stations):
     """Returns a list of stations that have inconsistent data"""
@@ -94,17 +96,22 @@ def stations_level_over_threshold(stations, tol):
     for station in stations:
 
         # Check if the typical range of the station is consistent
-        if station.typical_range_consistent():
+        if station.typical_range_consistent() and station.latest_level is not None:
             # Calculate the relative water level for the current station
-            relative_level = station.relative_water_level()
+            valid_stations.append(station)
             
-            # Check if the relative water level is not None and above the specified tolerance
-            if relative_level is not None and relative_level > tol:
-                # If both conditions are met, add the station and its relative level to the valid_stations list
-                valid_stations.append((station, relative_level))
-                
-    # Sort the valid stations based on their relative water levels in descending order
-    valid_stations_sorted = sorted(valid_stations, key=lambda x: x[1], reverse=True)
+        #list of tuples with station and water level
+        relative_levels = [(station, station.relative_water_level()) for station in valid_stations]
+        
+        # Check if the relative water level is not None and above the specified tolerance
+        over_threshold = []
+        for station, level in relative_levels:
+            if level > tol:
+                over_threshold.append((station, level))
 
-    # Return the sorted list of valid stations
-    return valid_stations_sorted
+        # Sort the valid stations based on their relative water levels in descending order
+        sorted_stations = sorted_by_key(over_threshold, 1, reverse = True)
+
+        # Return the sorted list of valid stations
+        return sorted_stations
+

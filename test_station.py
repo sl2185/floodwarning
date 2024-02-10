@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: MIT
 """Unit test for the station module"""
 
-from floodsystem.station import MonitoringStation
+from floodsystem.station import MonitoringStation, stations_level_over_threshold
+from floodsystem.stationdata import build_station_list, update_water_levels
+from floodsystem.utils import sorted_by_key
 
 
 def test_create_monitoring_station():
@@ -50,27 +52,41 @@ def test_typical_range_consistent():
     assert station5.typical_range_consistent() is False
 
 
-def test_relative_water_level(self):
-    # Test Case 1: Latest level and typical range available and consistent
-    station1 = MonitoringStation(1, 1, 'Station1', (0, 0), (0, 10), 'River1', 'Town1')
-    station1.latest_level = 5
-    assert station1.relative_water_level() == 0.5
+def test_relative_water_level():
+    station = MonitoringStation(1, 5, 'Station1', (0, 0), (5,10), 'River5', 'Town5')
 
-    # Test Case 2: Latest level is None
-    station2 = MonitoringStation(2, 2, 'Station2', (0, 0), (0, 10), 'River2', 'Town2')
-    assert station2.relative_water_level() is None
+    station.latest_level = 7.5
+    assert station.relative_water_level() == 0.5
 
-    # Test Case 3: Typical range is inconsistent (high < low)
-    station3 = MonitoringStation(3, 3, 'Station3', (0, 0), (10, 0), 'River3', 'Town3')
-    station3.latest_level = 5
-    assert station3.relative_water_level() is None
+    # Test when latest level is in typical range
+    station.latest_level = 3.0
+    assert station.relative_water_level() == -0.4
 
-    # Test Case 4: Typical range is inconsistent (high - low == 0)
-    station4 = MonitoringStation(4, 4, 'Station4', (0, 0), (5, 5), 'River4', 'Town4')
-    station4.latest_level = 5
-    assert station4.relative_water_level() is None
+    # Test when latest level is above typical range
+    station.latest_level = 12.0
+    assert station.relative_water_level() == 1.4
+    
+    # Test when typical range is none
+    station.typical_range = None
+    station.latest_level = 7.5
+    assert station.relative_water_level() is None
 
-    # Test Case 5: Latest level and typical range available, but latest level is higher than high
-    station5 = MonitoringStation(5, 5, 'Station5', (0, 0), (0, 10), 'River5', 'Town5')
-    station5.latest_level = 15
-    assert station5.relative_water_level() is None
+    # Test when latest level is none
+    station.typical_range = (5,10)
+    station.latest_level = None
+    assert station.relative_water_level() is None
+
+
+def test_stations_level_over_threshold():
+    # Mock stations with different typical ranges and latest levels
+    stations = build_station_list()
+    update_water_levels(stations)
+
+    tol = 0.8
+    
+    result = stations_level_over_threshold(stations, tol)
+
+    for station in result:
+        assert station[1] > tol
+
+    assert all(result[i][1] >= result[i+1][1] for i in range(len(result)-1))
