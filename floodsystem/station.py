@@ -100,20 +100,20 @@ def stations_level_over_threshold(stations, tol):
             # Calculate the relative water level for the current station
             valid_stations.append(station)
             
-        #list of tuples with station and water level
-        relative_levels = [(station, station.relative_water_level()) for station in valid_stations]
+    #list of tuples with station and water level
+    relative_levels = [(station, station.relative_water_level()) for station in valid_stations]
         
-        # Check if the relative water level is not None and above the specified tolerance
-        over_threshold = []
-        for station, level in relative_levels:
-            if level > tol:
-                over_threshold.append((station, level))
+    # Check if the relative water level is not None and above the specified tolerance
+    over_threshold = [(station, level) for station, level in relative_levels if level > tol]
+        #for station, level in relative_levels:
+            #if level > tol:
+                #over_threshold.append((station, level))
 
-        # Sort the valid stations based on their relative water levels in descending order
-        sorted_stations = sorted_by_key(over_threshold, 1, reverse = True)
+    # Sort the valid stations based on their relative water levels in descending order
+    sorted_stations = sorted_by_key(over_threshold, 1, reverse = True)
 
-        # Return the sorted list of valid stations
-        return sorted_stations
+    # Return the sorted list of valid stations
+    return sorted_stations
 
 def stations_highest_rel_level(stations, N):
     """
