@@ -10,7 +10,7 @@ def run():
     stations_over_threshold = stations_highest_rel_level(stations,10)
     
     for station in stations_over_threshold:
-        print(station.name, station.relative_water_leve(), "\n")
+        print(station.name, station.relative_water_level(), "\n")
 
 if __name__ == "__main__":
     print("*** Task 2C: CUED Part IA Flood Warning System ***")
