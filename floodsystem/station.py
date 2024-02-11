@@ -105,9 +105,6 @@ def stations_level_over_threshold(stations, tol):
         
     # Check if the relative water level is not None and above the specified tolerance
     over_threshold = [(station, level) for station, level in relative_levels if level > tol]
-        #for station, level in relative_levels:
-            #if level > tol:
-                #over_threshold.append((station, level))
 
     # Sort the valid stations based on their relative water levels in descending order
     sorted_stations = sorted_by_key(over_threshold, 1, reverse = True)
@@ -121,9 +118,10 @@ def stations_highest_rel_level(stations, N):
     relative to the typical range, is highest. The list is sorted in 
     descending order by relative level.
     """
-
+    # stations with levels over a threshold 1
     over_threshold = stations_level_over_threshold(stations,1)
 
+    #sort stations on their level
     sorted_stations = sorted_by_key(over_threshold, 1, reverse=True)
 
     output=[]
