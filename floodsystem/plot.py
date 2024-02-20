@@ -69,3 +69,4 @@ def plot_water_level_with_fit(station, dates, levels, p):
    # Display plot
     plt.tight_layout()  
     plt.show()
+
