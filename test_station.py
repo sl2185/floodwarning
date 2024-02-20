@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 """Unit test for the station module"""
 
-from floodsystem.station import MonitoringStation, stations_level_over_threshold, stations_highest_rel_level
+from floodsystem.station import MonitoringStation
 from floodsystem.stationdata import build_station_list, update_water_levels
 from floodsystem.utils import sorted_by_key
 
